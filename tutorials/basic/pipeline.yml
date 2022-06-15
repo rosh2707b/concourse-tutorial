@@ -1,0 +1,24 @@
+---
+resources:
+  - name: resource-tutorial
+    type: git
+    source:
+      uri: https://github.com/rosh2707b/concourse-tutorial.git
+      branch: master
+
+
+jobs:
+  - name: job-hello-clone
+    public: true
+    plan:
+      - get: resource-tutorial
+      - task: hello-clone
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source: {repository: alpine}
+          input:
+            - name: resource-tutorial
+          run:
+            path: resource-tutorial/pyscript.py
